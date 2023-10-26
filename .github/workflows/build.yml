@@ -96,6 +96,17 @@ jobs:
     - name: "Test wasm-opt"
       run: |
         node ./bin/wasm-opt --help
+    - name: "Build wasm-merge"
+      run: |
+        cd ./binaryen/build
+        source $HOME/emsdk/emsdk_env.sh
+        emcc --version
+        emmake make -j2 wasm-merge
+        echo '#!/usr/bin/env node' | cat - ./bin/wasm-merge.js > ../../bin/wasm-merge
+        cd ../..
+    - name: "Test wasm-merge"
+      run: |
+        node ./bin/wasm-merge --help
     - name: "Build wasm2js"
       run: |
         cd ./binaryen/build
