@@ -16,6 +16,7 @@
   "typings": "index.d.ts",
   "bin": {
     "wasm-opt": "bin/wasm-opt",
+    "wasm-merge": "bin/wasm-merge",
     "wasm2js": "bin/wasm2js"
   },
   "scripts": {
