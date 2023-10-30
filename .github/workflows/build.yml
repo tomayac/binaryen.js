@@ -121,7 +121,7 @@ jobs:
     - name: "Push changes to GitHub"
       if: github.event_name == 'schedule' && matrix.emsdk == 'tot'
       run: |
-        git add ./binaryen ./index.js ./bin/wasm-opt ./bin/wasm2js
+        git add ./binaryen ./index.js ./bin/wasm-opt ./bin/wasm-merge ./bin/wasm2js
         npm version $VERSION --no-git-tag-version --force
         if [ $RELEASE ]; then
           echo "Committing release ("$VERSION") ..."
@@ -131,10 +131,10 @@ jobs:
           echo "Committing nightly ("$VERSION") ..."
           git commit -m "Nightly v$VERSION [ci skip]"
         fi
-        git push -u origin main
+        git push
         echo "Creating tag v$VERSION ..."
         git tag "v$VERSION"
-        git push -u origin "v$VERSION"
+        git push
     - name: "Publish to npm"
       if: github.event_name == 'schedule' && matrix.emsdk == 'tot'
       env:
