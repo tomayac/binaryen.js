@@ -14,7 +14,7 @@ jobs:
     if: github.event_name == 'schedule' || !contains(github.event.head_commit.message, '[ci skip]')
     strategy:
       matrix:
-        emsdk: [ "tot", "latest" ]
+        emsdk: [ "latest" ]
       fail-fast: false
     steps:
     - uses: actions/setup-node@v3
@@ -135,17 +135,3 @@ jobs:
         echo "Creating tag v$VERSION ..."
         git tag "v$VERSION"
         git push
-    - name: "Publish to npm"
-      if: github.event_name == 'schedule' && matrix.emsdk == 'tot'
-      env:
-        NPM_REGISTRY: "registry.npmjs.org"
-        NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: |
-        npm config set "//${NPM_REGISTRY}/:_authToken=${NPM_AUTH_TOKEN}"
-        if [ $RELEASE ]; then
-          echo "Publishing release ..."
-          npm publish
-        else
-          echo "Publishing nightly ..."
-          npm publish --tag nightly
-        fi
